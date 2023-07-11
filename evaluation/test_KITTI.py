@@ -44,13 +44,6 @@ def eval_KITTI_per_pair(model, dloader, config, use_icp):
             src_keypts = src_keypts[:, :, :3]
             tgt_keypts = tgt_keypts[:, :, :3]
 
-            N = src_keypts.shape[1]
-            KK= 9800
-            if N > KK:
-                corr = corr[:, :KK]
-                src_keypts = src_keypts[:, :KK]
-                tgt_keypts = tgt_keypts[:, :KK]
-                gt_labels = gt_labels[:, :KK]
             data = {
                 'corr_pos': corr,
                 'src_keypts': src_keypts,
