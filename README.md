@@ -49,8 +49,8 @@ The raw point clouds can be download from [KITTI Odometry website.](http://www.c
 
 ## Pretrained Model
 
-We provide the pre-trained model of 3DMatch in `snapshot/VBReg_3DMatch_release` and KITTI in `snapshot/VBReg_KITTI_release`. 
-Both of them take correspondence coordinates rather than correspondence feature+corrdinate as input.  
+We provide the pre-trained models of 3DMatch in `snapshot/VBReg_3DMatch_release` and KITTI in `snapshot/VBReg_KITTI_release`. 
+To be more general, both of these pre-trained models take correspondence coordinates rather than correspondence feature+corrdinate as input.  
 
 
 ## Instructions to training and testing
