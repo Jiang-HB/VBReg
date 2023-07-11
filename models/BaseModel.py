@@ -203,13 +203,6 @@ class BaseModel(nn.Module):
         infos["seeds"] = torch.argsort(infos["confidence"], dim=1, descending=True)[:, :int(N * self.ratio)]  # [B, K]
         return infos
 
-    # def pick_seeds(self, infos):
-    #     if infos["testing"]:
-    #         infos = self.pick_seeds_nms(infos)
-    #     else:
-    #         infos = self.pick_seeds_greedy(infos)
-    #     return infos
-
     def pick_seeds(self, infos):
         if infos["testing"]:
             if infos["vb_eval"]:
@@ -305,10 +298,6 @@ class BaseModel(nn.Module):
         infos["consensus_weight"] = consensus_weight.reshape(B, K, A)
         return infos
 
-    # def metric(self, infos):
-    #     infos["seedwise_fitness"] = torch.mean((infos["L2_dis"] < self.inlier_threshold).float(), dim=-1)  # [B, K]
-    #     return infos
-
     def metric(self, infos):
         """
         :param L2_dis: [B, K, N]
@@ -403,23 +392,6 @@ class BaseModel(nn.Module):
             infos["final_labels"] = infos["confidence"]
 
         return infos
-
-    def plot_feat_compat_maps(self, infos):
-        normed_corr_feat = infos["normed_corr_feat"]  # [B, D, N]
-        feat_compatibility = torch.matmul(normed_corr_feat.transpose(2, 1), normed_corr_feat)  # [B, N, N]
-        feat_compatibility = torch.clamp(1 - (1 - feat_compatibility) / self.sigma ** 2, min=0, max=1)  # [B, N, N]
-        attention_map = feat_compatibility[0].cpu() * infos["spatial_compatibility"][0].cpu()
-        inlier_idxs = torch.where(infos["hard_gt_labels"] == 1.0)[1].cpu()
-        outlier_idxs = torch.where(infos["hard_gt_labels"] == 0.0)[1].cpu()
-        idxs = torch.cat([inlier_idxs, outlier_idxs], dim=0)
-        attention_map = attention_map.gather(dim=0, index=idxs[:, None].expand(-1, attention_map.shape[0]))
-        attention_map = attention_map.gather(dim=1, index=idxs[None].expand(attention_map.shape[0], -1))
-
-        self.maps.append(attention_map.cpu().numpy())
-
-        # if len(self.maps) > 10:
-        #     plot_attention_map(self.maps, img_path=self.config.attention_map_nm)
-        #     exit(-1)
 
     def forward(self, data):
 
