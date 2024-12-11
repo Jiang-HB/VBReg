@@ -54,7 +54,7 @@ To be more general, both of these pre-trained models take correspondence coordin
 
 ## Instructions to training and testing
 
-(If you encounter out-of-memory error, I kindly suggest you to reduce the number of input correspondences.)
+(If you encounter out-of-memory error, I suggest you reduce the number of input correspondences.)
 
 ### 3DMatch / KITTI 
 
